@@ -43,14 +43,14 @@ function Description({ description }) {
 									doApiCall(
 										AXIOS_METHOD.PATCH,
 										`/wallet/${id}`,
-										{
-											description: { newDescription },
-										},
 										(_unusedNewDescription) => {
 											console.log("sikerült");
 										},
 										(message) => {
 											console.log("nem sikerült");
+										},
+										{
+											description: newDescription,
 										}
 									);
 								}}

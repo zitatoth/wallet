@@ -1,10 +1,8 @@
 import * as React from "react";
-import { Grid, Button } from "@mui/material";
-
+import { Grid } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-mui";
-
 import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
 import SubmitButton from "../components/SubmitButton";
 
@@ -37,6 +35,7 @@ function NewWalletModal({ onClose }) {
 							(_unusedNewWallet) => {
 								setSubmitting(false);
 								onClose();
+								doApiCall(AXIOS_METHOD.GET, "/wallet");
 							},
 							(apiError) => {
 								setFieldError("name", apiError);

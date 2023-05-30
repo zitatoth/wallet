@@ -11,11 +11,9 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import DetailsIcon from "@mui/icons-material/Details";
 import Balance from "./Balance";
 import { useNavigate } from "react-router-dom";
-import { useModals, MODALS } from "../hooks/useModal";
 
 function OneWallet({ id, name, balance, onDelete }) {
 	const navigate = useNavigate();
-	const { showModal } = useModals();
 
 	return (
 		<Grid item xs={6} md={4} lg={3}>

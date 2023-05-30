@@ -7,6 +7,7 @@ export const AXIOS_METHOD = {
 	POST: "POST",
 	PUT: "PUT",
 	DELETE: "DELETE",
+	PATCH: "PATCH",
 };
 
 let authToken = false;

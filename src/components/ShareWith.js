@@ -16,7 +16,6 @@ function ShareWith() {
 		limit: 200,
 		cursor: "",
 	});
-	console.log(userList);
 
 	const [user, setUser] = useState("");
 	const handleChange = (event) => {
@@ -64,9 +63,20 @@ function ShareWith() {
 					color="primary"
 					sx={{ fontSize: 24, cursor: "pointer" }}
 					onClick={() => {
-						doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/grant_access`, {
-							user_id: user,
-						});
+						doApiCall(
+							AXIOS_METHOD.POST,
+							`/wallet/${id}/grant_access`,
+							(_unusedNewDescription) => {
+								console.log("sikerült");
+								//frissítse a SharedWith listát
+							},
+							(message) => {
+								console.log("nem sikerült");
+							},
+							{
+								user_id: user,
+							}
+						);
 					}}
 				/>
 			</Box>
