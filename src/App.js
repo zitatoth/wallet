@@ -51,7 +51,7 @@ function App() {
 						}
 					/>
 					<Route path="/wallet/:id" element={<EditPage />} />
-					<Route path="/newtransaction" element={<NewTransaction />} />
+					<Route path="/newtransaction/:id" element={<NewTransaction />} />
 					<Route path="*" element={<Page404 />} />
 				</Routes>
 			</Container>

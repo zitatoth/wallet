@@ -1,13 +1,25 @@
 import * as React from "react";
-import { Grid, Box, Button } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-mui";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { AXIOS_METHOD, doApiCall } from "../hooks/useApi";
+import SubmitButton from "./SubmitButton";
 
-function TransactionForm() {
+function validateTitle(title) {
+	if (!title) {
+		return "Title is required";
+	} else if (title.length < 3 || title.length > 50) {
+		return "Title must be between 3 and 50 characters";
+	}
+}
+
+function validateAmount(amount) {
+	if (!amount) {
+		return "Amount is required";
+	}
+}
+
+function TransactionForm({ id }) {
 	return (
 		<Box style={{ width: "50%", margin: "0 auto", marginTop: 40 }}>
 			<Formik
@@ -16,27 +28,35 @@ function TransactionForm() {
 					title: "",
 					description: "",
 				}}
+				onSubmit={(value, { setFieldError, setSubmitting }) => {
+					setSubmitting(true);
+					doApiCall(
+						AXIOS_METHOD.PUT,
+						"/transactions",
+						(_unusedNewWallet) => {
+							setSubmitting(false);
+						},
+						(apiError) => {
+							setFieldError("title", apiError);
+							setSubmitting(false);
+						},
+						{
+							wallet_id: id,
+							title: value.title,
+							amount: value.amount,
+							extra: {
+								description: value.description,
+							},
+						}
+					);
+				}}
 			>
 				<Form>
 					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<div>
-								<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-									<InputLabel id="inorout">in / out</InputLabel>
-									<Select
-										labelId="inorout"
-										id="inoroutselect"
-										value={"income/outcome"}
-										label="in / out"
-									>
-										<MenuItem>income</MenuItem>
-										<MenuItem>outcome</MenuItem>
-									</Select>
-								</FormControl>
-							</div>
-						</Grid>
+						<Grid item xs={12}></Grid>
 						<Grid item xs={12}>
 							<Field
+								validate={validateAmount}
 								fullWidth
 								component={TextField}
 								name="amount"
@@ -47,6 +67,7 @@ function TransactionForm() {
 						</Grid>
 						<Grid item xs={12}>
 							<Field
+								validate={validateTitle}
 								fullWidth
 								component={TextField}
 								name="title"
@@ -68,14 +89,7 @@ function TransactionForm() {
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<Button
-								size={"large"}
-								type="submit"
-								fullWidth
-								variant={"contained"}
-							>
-								Add
-							</Button>
+							<Field component={SubmitButton} label={"Add"} />
 						</Grid>
 					</Grid>
 				</Form>

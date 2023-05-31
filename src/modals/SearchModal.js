@@ -20,8 +20,6 @@ function SearchModal({ onClose }) {
 		cursor: "",
 	});
 
-	//console.log(userList);
-
 	const handleSearch = (expression) => {
 		const searchedUser = userList.users.find(
 			(item) => item.name === expression
@@ -32,7 +30,6 @@ function SearchModal({ onClose }) {
 		} else {
 			setSearchResult("User not found");
 		}
-		// console.log(setSearchResult);
 		setSearchedName("");
 	};
 
@@ -40,7 +37,6 @@ function SearchModal({ onClose }) {
 		if (event.key === "Enter") {
 			handleSearch(searchedName);
 		}
-		// console.log(searchedName);
 	};
 
 	return (

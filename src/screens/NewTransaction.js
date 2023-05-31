@@ -1,8 +1,11 @@
 import { Grid } from "@mui/material";
 import SimpleAppBarNewT from "../components/SimpleAppBarNewT";
 import TransactionForm from "../components/TransactionForm";
+import { useParams } from "react-router-dom";
 
 function NewTransaction() {
+	const { id } = useParams();
+
 	return (
 		<Grid
 			container
@@ -14,7 +17,7 @@ function NewTransaction() {
 			}}
 		>
 			<SimpleAppBarNewT />
-			<TransactionForm />
+			<TransactionForm id={id} />
 		</Grid>
 	);
 }

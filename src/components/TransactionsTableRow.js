@@ -1,23 +1,31 @@
 import * as React from "react";
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 
-function TransactionsTableRow() {
+function formatDate(dateString) {
+	return new Date(dateString).toLocaleDateString();
+}
+
+function TransactionsTableRow({ date, amount, title, description, onDelete }) {
 	return (
 		<TableRow sx={{ borderBottom: 1 }}>
 			<TableCell style={{ width: "20%" }} align="center">
-				dátum
+				{formatDate(date)}
+			</TableCell>
+			<TableCell
+				style={{ width: "20%", color: amount < 0 ? "#D32F2F" : "#99d98c" }}
+				align="center"
+			>
+				{amount}
 			</TableCell>
 			<TableCell style={{ width: "20%" }} align="center">
-				összeg
+				{title}
 			</TableCell>
 			<TableCell style={{ width: "20%" }} align="center">
-				megnevezés
-			</TableCell>
-			<TableCell style={{ width: "20%" }} align="center">
-				megjegyzés
+				{description}
 			</TableCell>
 			<TableCell style={{ width: "10%" }} align="center">
-				törlés
+				<RestoreFromTrashIcon sx={{ color: "#D32F2F" }} onClick={onDelete} />
 			</TableCell>
 		</TableRow>
 	);

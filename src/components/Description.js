@@ -10,7 +10,6 @@ function Description({ description }) {
 	const [newDescription, setNewDescription] = useState(description);
 	const [isEditing, setIsEditing] = useState(false);
 	const { id } = useParams();
-	//console.log(newDescription);
 
 	return (
 		<Grid container item sx={{ width: "100%" }}>

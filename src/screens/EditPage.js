@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Paper, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box, Paper } from "@mui/material";
 import SimpleAppBarEdit from "../components/SimpleAppBarEdit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Balance from "../components/Balance";
@@ -7,14 +7,23 @@ import TransactionsTable from "../components/TransactionsTable";
 import Description from "../components/Description";
 import { useNavigate, useParams } from "react-router-dom";
 import { AXIOS_METHOD, useApi } from "../hooks/useApi";
-import { useAuth } from "../hooks/useAuth";
 import LoadingBlock from "../components/LoadingBlock";
 
 function EditPage() {
-	const { authToken } = useAuth();
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const [wallet, loading, error] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`);
+
+	const [
+		transactionsResult,
+		transactionLoading,
+		transactionError,
+		transactionRefreshPage,
+	] = useApi(AXIOS_METHOD.POST, "/transactions", {
+		wallet_id: id,
+		limit: 200,
+		cursor: "",
+	});
 
 	if (loading === false && error !== false) {
 		navigate("/Page404");
@@ -51,14 +60,20 @@ function EditPage() {
 									color="primary"
 									sx={{ cursor: "pointer" }}
 									onClick={() => {
-										navigate("/newtransaction");
+										navigate(`/newtransaction/${id}`);
 									}}
 								/>
 							</Box>
 						</Box>
 					</Grid>
 					<Grid item>
-						<TransactionsTable />
+						<TransactionsTable
+							walletId={id}
+							transactionsResult={transactionsResult}
+							loading={transactionLoading}
+							error={transactionError}
+							refreshPage={transactionRefreshPage}
+						/>
 					</Grid>
 				</Grid>
 				<Grid item xs={12} md={6} sx={{ padding: 2 }}>
@@ -87,7 +102,10 @@ function EditPage() {
 								Balance
 							</Typography>
 							<Paper variant="outlined" sx={{ mt: 1, borderRadius: 1 }}>
-								<Balance balance={wallet.balance} />
+								<Balance
+									balance={wallet.balance}
+									transactionsResult={transactionsResult}
+								/>
 							</Paper>
 						</Grid>
 					</Grid>

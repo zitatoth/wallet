@@ -9,11 +9,16 @@ import {
 } from "@mui/material";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import DetailsIcon from "@mui/icons-material/Details";
-import Balance from "./Balance";
 import { useNavigate } from "react-router-dom";
+import SmallWallet from "./SmallWallet";
 
-function OneWallet({ id, name, balance, onDelete }) {
+function OneWallet({ id, name, balance, onDelete, transactionsResult }) {
 	const navigate = useNavigate();
+	let income = 0;
+	let outcome = 0;
+	transactionsResult?.transactions.forEach((item) => {
+		item.amount > 0 ? (income += item.amount) : (outcome += item.amount);
+	});
 
 	return (
 		<Grid item xs={6} md={4} lg={3}>
@@ -31,7 +36,7 @@ function OneWallet({ id, name, balance, onDelete }) {
 					sx={{ color: "#1976D2", textAlign: "center" }}
 				></CardHeader>
 				<CardContent sx={{ width: "100%", padding: 0 }}>
-					<Balance balance={balance} />
+					<SmallWallet balance={balance} />
 				</CardContent>
 
 				<CardActions>

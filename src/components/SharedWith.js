@@ -14,7 +14,6 @@ function SharedWith({ access }) {
 	const [user, setUser] = useState("");
 	const handleChange = (event) => {
 		setUser(event.target.value);
-		console.log(user);
 	};
 
 	return (

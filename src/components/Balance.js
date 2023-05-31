@@ -2,12 +2,17 @@ import React from "react";
 import { CardMedia, Box, Typography } from "@mui/material";
 import wallet from "../pictures/wallet.svg";
 
-let income = 400000;
-let outcome = 300366;
-let incomeHeight = (income / (income + outcome)) * 150;
-let outcomeHeight = (outcome / (income + outcome)) * 150;
+function Balance({ balance, transactionsResult }) {
+	let income = 0;
+	let outcome = 0;
 
-function Balance({ balance }) {
+	transactionsResult?.transactions?.forEach((item) => {
+		item.amount < 0 ? (outcome += item.amount) : (income += item.amount);
+	});
+
+	let incomeHeight = income / (income + Math.abs(outcome));
+	let outcomeHeight = Math.abs(outcome) / (income + Math.abs(outcome));
+
 	return (
 		<Box
 			sx={{
@@ -20,7 +25,7 @@ function Balance({ balance }) {
 			<Box
 				sx={{
 					display: "flex",
-					width: "40%",
+					width: "50%",
 					justifyContent: "center",
 					alignItems: "center",
 					position: "relative",
@@ -51,6 +56,7 @@ function Balance({ balance }) {
 					display: "flex",
 					justifyContent: "space-around",
 					width: "40%",
+					height: 100,
 				}}
 			>
 				<Box
